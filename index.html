@@ -4,16 +4,134 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CyberOS — Gustavo Toral</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0c0f;--bg2:#111419;--bg3:#181c23;
+  --border:#1e2430;--border2:#2a3040;
+  --text:#e8edf5;--text2:#8a95a8;--text3:#555f70;
+  --teal:#0fcfa0;--teal-dim:#0a8f6e;--teal-bg:rgba(15,207,160,0.08);
+  --blue:#4da6f5;--blue-bg:rgba(77,166,245,0.08);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.08);
+  --green:#4ade80;--green-bg:rgba(74,222,128,0.08);
+  --gray-bg:rgba(138,149,168,0.1);
+  --radius:8px;--radius-lg:12px;
+  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
+}
+html{font-size:15px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;min-height:100vh}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+button{cursor:pointer;font-family:var(--sans)}
+.nav{display:flex;align-items:center;gap:1rem;padding:0 1.5rem;height:52px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10}
+.nav-logo{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--teal);letter-spacing:.05em;white-space:nowrap}
+.logo-bracket{color:var(--text3)}
+.nav-tabs{display:flex;gap:2px;flex:1}
+.tab{background:none;border:none;padding:6px 12px;font-size:13px;color:var(--text2);border-radius:var(--radius);transition:background .15s,color .15s}
+.tab:hover{background:var(--bg3);color:var(--text)}
+.tab.active{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
+.nav-right{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-label{font-size:12px;color:var(--text3);font-family:var(--mono)}
+.page{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:1.75rem}
+.page-title{font-size:22px;font-weight:600;color:var(--text);margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--text2)}
+.hero-block{display:flex;gap:1.25rem;align-items:flex-start;margin-bottom:1.75rem;padding:1.25rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:var(--teal-bg);border:1px solid var(--teal-dim);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--teal);flex-shrink:0}
+.hero-name{font-size:18px;font-weight:600;margin-bottom:3px}
+.hero-sub{font-size:12px;color:var(--text2);margin-bottom:8px;font-family:var(--mono)}
+.hero-summary{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.hero-links{display:flex;gap:8px;flex-wrap:wrap}
+.progress-section{margin-bottom:1.5rem;padding:1rem 1.25rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-label{font-size:12px;color:var(--text2);font-family:var(--mono)}
+.progress-pct{font-size:13px;font-weight:700;color:var(--teal);font-family:var(--mono)}
+.progress-track{height:4px;background:var(--bg3);border-radius:99px;margin-bottom:6px}
+.progress-fill{height:4px;background:var(--teal);border-radius:99px;box-shadow:0 0 8px var(--teal-dim)}
+.progress-note{font-size:11px;color:var(--text3)}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.metric-num{font-size:26px;font-weight:600;color:var(--text);font-family:var(--mono);line-height:1}
+.metric-lbl{font-size:11px;color:var(--text3)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem}
+.panel-title{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:var(--mono)}
+.row-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.row-item:last-of-type{border-bottom:none}
+.row-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-green{background:var(--green)}
+.dot-amber{background:var(--amber)}
+.dot-gray{background:var(--text3)}
+.row-main{flex:1;min-width:0}
+.row-name{font-size:13px;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-sub{font-size:11px;color:var(--text3);display:block;margin-top:1px}
+.see-more{margin-top:10px;background:none;border:none;font-size:12px;color:var(--teal);padding:0;font-family:var(--sans)}
+.see-more:hover{text-decoration:underline}
+.badge{font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:99px;white-space:nowrap;flex-shrink:0}
+.badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(74,222,128,.2)}
+.badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(245,166,35,.2)}
+.badge-blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(77,166,245,.2)}
+.badge-gray{background:var(--gray-bg);color:var(--text2);border:1px solid var(--border2)}
+.link-chip{font-size:12px;font-family:var(--mono);padding:4px 10px;border:1px solid var(--border2);border-radius:99px;color:var(--text2);transition:border-color .15s,color .15s}
+.link-chip:hover{border-color:var(--teal);color:var(--teal);text-decoration:none}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.cert-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem}
+.cert-card.cert-earned{border-left:3px solid var(--teal)}
+.cert-card.cert-planned{border-left:3px solid var(--text3)}
+.cert-card.cert-in-progress{border-left:3px solid var(--amber)}
+.cert-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.cert-issuer{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.cert-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px}
+.cert-date{font-size:12px;color:var(--text2);margin-top:4px}
+.cert-notes{font-size:12px;color:var(--text3);margin-top:4px}
+.cert-link{font-size:12px;color:var(--teal);display:inline-block;margin-top:8px;font-family:var(--mono)}
+.project-list{display:flex;flex-direction:column;gap:14px}
+.project-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem}
+.project-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:1rem}
+.project-name{font-size:15px;font-weight:500;color:var(--text);margin-bottom:6px}
+.project-skills{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{font-size:11px;font-family:var(--mono);padding:2px 8px;background:var(--bg3);border:1px solid var(--border2);border-radius:99px;color:var(--text2)}
+.project-desc{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px}
+.project-highlight{font-size:12px;color:var(--teal);font-family:var(--mono);margin-bottom:12px;padding:6px 10px;background:var(--teal-bg);border-radius:var(--radius);border-left:2px solid var(--teal-dim)}
+.project-links{display:flex;gap:8px}
+.skills-section{margin-bottom:2rem}
+.skills-cat{font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.skills-list{display:flex;flex-direction:column;gap:12px}
+.skill-row{display:flex;align-items:center;gap:12px}
+.skill-name{font-size:13px;color:var(--text);width:180px;flex-shrink:0}
+.skill-track{flex:1;height:3px;background:var(--bg3);border-radius:99px}
+.skill-fill{height:3px;background:var(--teal);border-radius:99px;box-shadow:0 0 6px var(--teal-dim)}
+.skill-pct{font-size:12px;color:var(--text3);font-family:var(--mono);width:36px;text-align:right}
+.skills-note{font-size:12px;color:var(--text3);margin-top:1rem;font-style:italic}
+.timeline{display:flex;flex-direction:column}
+.timeline-item{display:flex;gap:0;min-height:60px}
+.timeline-left{width:90px;flex-shrink:0;padding-top:2px;text-align:right;padding-right:12px}
+.tl-date{font-size:11px;font-family:var(--mono);color:var(--text3)}
+.timeline-connector{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.tl-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;z-index:1}
+.tl-teal{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-dim)}
+.tl-blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(77,166,245,.3)}
+.tl-purple{background:rgba(168,85,247,.1);color:#a855f7;border:1px solid rgba(168,85,247,.3)}
+.tl-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(245,166,35,.3)}
+.tl-gray{background:var(--gray-bg);color:var(--text2);border:1px solid var(--border2)}
+.tl-line{flex:1;width:1px;background:var(--border);margin:3px 0}
+.timeline-right{padding:0 0 1.5rem 12px;flex:1}
+.tl-type{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px;margin-top:2px}
+.tl-event{font-size:13px;color:var(--text2);line-height:1.5}
+@media(max-width:640px){
+  .metrics-row{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+  .tab{padding:5px 8px;font-size:12px}
+  .hero-block{flex-direction:column}
+  .timeline-left{width:70px}
+}
+</style>
 </head>
 <body>
-
 <div id="app">
-
-  <!-- NAV -->
   <nav class="nav">
     <div class="nav-logo"><span class="logo-bracket">[</span>CyberOS<span class="logo-bracket">]</span></div>
     <div class="nav-tabs" id="navTabs">
@@ -28,297 +146,194 @@
       <span class="status-label">Live</span>
     </div>
   </nav>
-
-  <!-- PAGES -->
   <main id="main"></main>
-
 </div>
 
 <script>
-// ── Load data ──────────────────────────────────────────────────────────────
-fetch('data.json')
-  .then(r => r.json())
-  .then(data => init(data))
-  .catch(() => {
-    document.getElementById('main').innerHTML = '<p style="padding:2rem;color:#f87171;">Could not load data.json. Make sure the file is in the same folder.</p>';
-  });
+// ================================================================
+//  YOUR DATA — this is the only section you ever need to edit
+// ================================================================
+const DATA = {
+  profile: {
+    name: "Gustavo Toral",
+    location: "Miami, FL",
+    targets: ["SOC Analyst I", "Help Desk", "Junior Cloud Support", "GRC"],
+    summary: "Career changer with 6+ months of intensive IT study, 4 CompTIA/AWS certifications, and hands-on lab projects. Background in sales and marketing — now focused on breaking into cybersecurity.",
+    github: "https://github.com/gustavotoral",
+    linkedin: "https://linkedin.com/in/gustavoatoral",
+    portfolio: "https://gustavotoral.github.io/helpdesk-portfolio/",
+    startDate: "2025-09-01"
+  },
 
-// ── Helpers ────────────────────────────────────────────────────────────────
-function daysAgo(dateStr) {
-  const start = new Date(dateStr);
-  const now = new Date();
-  return Math.floor((now - start) / (1000 * 60 * 60 * 24));
-}
+  certifications: [
+    { name: "CompTIA A+ ce Certification",               issuer: "CompTIA",               status: "earned",  earnedDate: "2025-12-01", credlyUrl: "", notes: "Core 1 & Core 2" },
+    { name: "CompTIA Network+ ce Certification",         issuer: "CompTIA",               status: "earned",  earnedDate: "2026-01-01", credlyUrl: "", notes: "" },
+    { name: "CompTIA IT Operations Specialist – CIOS",   issuer: "CompTIA",               status: "earned",  earnedDate: "2026-01-01", credlyUrl: "", notes: "Stackable certification — A+ and Network+ combined" },
+    { name: "CompTIA Security+",                         issuer: "CompTIA",               status: "earned",  earnedDate: "2026-02-01", credlyUrl: "", notes: "" },
+    { name: "AWS Certified Cloud Practitioner",          issuer: "Amazon Web Services",   status: "earned",  earnedDate: "2026-04-01", credlyUrl: "", notes: "" },
+    { name: "AI Clinics Cohort 5",                       issuer: "Coursera",              status: "earned",  earnedDate: "2025-10-01", credlyUrl: "", notes: "" },
+    { name: "AWS Solutions Architect – Associate",       issuer: "Amazon Web Services",   status: "planned", earnedDate: "",           credlyUrl: "", notes: "Next target after landing first role" },
+    { name: "CompTIA CySA+",                             issuer: "CompTIA",               status: "planned", earnedDate: "",           credlyUrl: "", notes: "Supports SOC Analyst track" }
+  ],
 
-function monthLabel(dateStr) {
-  const [year, month] = dateStr.split('-');
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return months[parseInt(month, 10) - 1] + ' ' + year;
-}
+  projects: [
+    { name: "Active Directory Home Lab",            description: "Built and configured an AD environment on Windows Server. Documented and resolved real issues including a DHCP misconfiguration and a static IP conflict.",                                                                        skills: ["Active Directory","Windows Server","DHCP","Troubleshooting"],    status: "complete",     githubUrl: "https://github.com/gustavotoral",            liveUrl: "https://gustavotoral.github.io/helpdesk-portfolio/", highlight: "Documented real troubleshooting scenarios — not just a clean setup" },
+    { name: "AWS S3 + CloudFront Static Site",      description: "Deployed a static portfolio website on AWS. Debugged two real configuration errors: 504 Gateway Timeout from wrong S3 endpoint, and a blank page from missing default root object.",                                             skills: ["AWS S3","CloudFront","DNS","Debugging"],                         status: "complete",     githubUrl: "https://github.com/gustavotoral/aws-portfolio", liveUrl: "https://gustavotoral.github.io",                     highlight: "Real debugging — not a tutorial walkthrough" },
+    { name: "SIEM Incident Response Simulator",     description: "Built a React-based SIEM simulator for Security+ exam prep and portfolio demonstration. Simulates real alert triage and incident response workflows.",                                                                            skills: ["React","JavaScript","SIEM concepts","Incident Response"],        status: "complete",     githubUrl: "https://github.com/gustavotoral",            liveUrl: "",                                                   highlight: "Built to demonstrate SOC analyst thinking" },
+    { name: "Security Controls Implementation Lab", description: "Windows Server 2022 environment implementing NTFS permissions, least privilege principles, and security controls documentation.",                                                                                                 skills: ["Windows Server 2022","NTFS","Least Privilege","Security Controls"],status: "complete",    githubUrl: "https://github.com/gustavotoral",            liveUrl: "",                                                   highlight: "Mapped directly to CompTIA Security+ objectives" },
+    { name: "Serverless Contact Form (Lambda+SES)", description: "AWS serverless contact form using Lambda, API Gateway, and SES. Built to extend cloud skills beyond static hosting.",                                                                                                            skills: ["AWS Lambda","API Gateway","SES","Serverless"],                   status: "in-progress",  githubUrl: "",                                           liveUrl: "",                                                   highlight: "Shows progression from static to dynamic cloud architecture" }
+  ],
 
-function statusBadge(status) {
-  const map = {
-    earned: ['badge-green', 'Earned'],
-    planned: ['badge-gray', 'Planned'],
-    'in-progress': ['badge-amber', 'In progress'],
-    complete: ['badge-green', 'Complete']
-  };
-  const [cls, label] = map[status] || ['badge-gray', status];
-  return `<span class="badge ${cls}">${label}</span>`;
-}
+  skills: [
+    { name: "Cloud (AWS)",            level: 70, category: "cloud" },
+    { name: "Networking",             level: 75, category: "infrastructure" },
+    { name: "Security fundamentals",  level: 65, category: "security" },
+    { name: "Windows Server / AD",    level: 60, category: "infrastructure" },
+    { name: "Linux / CLI",            level: 50, category: "infrastructure" },
+    { name: "Incident response",      level: 55, category: "security" },
+    { name: "GRC concepts",           level: 40, category: "security" },
+    { name: "Python / scripting",     level: 30, category: "development" }
+  ],
 
-function typeIcon(type) {
-  return { cert: '◆', project: '▲', education: '●', milestone: '★' }[type] || '●';
-}
+  timeline: [
+    { date: "2025-09", event: "Started cloud & network security program at The Academy Miami", type: "education" },
+    { date: "2025-10", event: "Earned AI Clinics Cohort 5 — Coursera",                        type: "cert" },
+    { date: "2025-12", event: "Earned CompTIA A+",                                             type: "cert" },
+    { date: "2026-01", event: "Earned CompTIA Network+",                                       type: "cert" },
+    { date: "2026-01", event: "Earned CompTIA CIOS Stackable Certification",                   type: "cert" },
+    { date: "2026-01", event: "Built Active Directory home lab — documented real troubleshooting", type: "project" },
+    { date: "2026-02", event: "Earned CompTIA Security+",                                      type: "cert" },
+    { date: "2026-02", event: "Deployed AWS S3 + CloudFront static site — debugged 2 real errors", type: "project" },
+    { date: "2026-03", event: "Built SIEM Incident Response Simulator in React",               type: "project" },
+    { date: "2026-04", event: "Earned AWS Certified Cloud Practitioner",                       type: "cert" },
+    { date: "2026-04", event: "Attended Miami Dade College tech hiring day",                   type: "milestone" }
+  ],
 
-function typeColor(type) {
-  return { cert: 'teal', project: 'blue', education: 'purple', milestone: 'amber' }[type] || 'gray';
-}
+  applications: []
+};
+// ================================================================
+//  END OF DATA — do not edit below this line
+// ================================================================
 
-// ── Progress calculation ───────────────────────────────────────────────────
-function calcProgress(data) {
-  let score = 0;
-  const earned = data.certifications.filter(c => c.status === 'earned').length;
-  score += Math.min(earned * 10, 30);
-  const done = data.projects.filter(p => p.status === 'complete').length;
-  score += Math.min(done * 8, 32);
-  if (data.profile.github) score += 10;
-  if (data.profile.linkedin) score += 8;
-  return Math.min(score, 100);
-}
+function daysAgo(d){return Math.floor((new Date()-new Date(d))/(1000*60*60*24))}
+function monthLabel(d){if(!d)return'';const p=d.split('-');return['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(p[1],10)-1]+' '+p[0]}
+function statusBadge(s){const m={earned:['badge-green','Earned'],planned:['badge-gray','Planned'],'in-progress':['badge-amber','In progress'],complete:['badge-green','Complete']};const[c,l]=m[s]||['badge-gray',s];return`<span class="badge ${c}">${l}</span>`}
+function typeIcon(t){return{cert:'◆',project:'▲',education:'●',milestone:'★'}[t]||'●'}
+function typeColor(t){return{cert:'teal',project:'blue',education:'purple',milestone:'amber'}[t]||'gray'}
+function calcProgress(d){let s=0;s+=Math.min(d.certifications.filter(c=>c.status==='earned').length*10,30);s+=Math.min(d.projects.filter(p=>p.status==='complete').length*8,32);if(d.profile.github)s+=10;if(d.profile.linkedin)s+=8;return Math.min(s,100)}
 
-// ── Pages ──────────────────────────────────────────────────────────────────
-function renderDashboard(data) {
-  const progress = calcProgress(data);
-  const days = daysAgo(data.profile.startDate);
-  const earnedCerts = data.certifications.filter(c => c.status === 'earned').length;
-  const completedProjects = data.projects.filter(p => p.status === 'complete').length;
-  const apps = data.applications.length;
-
-  return `
-    <div class="page page-dashboard">
-
-      <div class="hero-block">
-        <div class="hero-avatar">${data.profile.name.split(' ').map(n=>n[0]).join('')}</div>
-        <div class="hero-info">
-          <h1 class="hero-name">${data.profile.name}</h1>
-          <p class="hero-sub">${data.profile.location} &nbsp;·&nbsp; Targeting: ${data.profile.targets.slice(0,3).join(', ')}</p>
-          <p class="hero-summary">${data.profile.summary}</p>
-          <div class="hero-links">
-            ${data.profile.github ? `<a href="${data.profile.github}" target="_blank" class="link-chip">GitHub ↗</a>` : ''}
-            ${data.profile.linkedin ? `<a href="${data.profile.linkedin}" target="_blank" class="link-chip">LinkedIn ↗</a>` : ''}
-            ${data.profile.portfolio ? `<a href="${data.profile.portfolio}" target="_blank" class="link-chip">Portfolio ↗</a>` : ''}
-          </div>
+function renderDashboard(d){
+  const prog=calcProgress(d),days=daysAgo(d.profile.startDate),earned=d.certifications.filter(c=>c.status==='earned').length,done=d.projects.filter(p=>p.status==='complete').length;
+  return`<div class="page">
+    <div class="hero-block">
+      <div class="hero-avatar">${d.profile.name.split(' ').map(n=>n[0]).join('')}</div>
+      <div>
+        <h1 class="hero-name">${d.profile.name}</h1>
+        <p class="hero-sub">${d.profile.location} &nbsp;·&nbsp; Targeting: ${d.profile.targets.slice(0,3).join(', ')}</p>
+        <p class="hero-summary">${d.profile.summary}</p>
+        <div class="hero-links">
+          ${d.profile.github?`<a href="${d.profile.github}" target="_blank" class="link-chip">GitHub ↗</a>`:''}
+          ${d.profile.linkedin?`<a href="${d.profile.linkedin}" target="_blank" class="link-chip">LinkedIn ↗</a>`:''}
+          ${d.profile.portfolio?`<a href="${d.profile.portfolio}" target="_blank" class="link-chip">Portfolio ↗</a>`:''}
         </div>
-      </div>
-
-      <div class="progress-section">
-        <div class="progress-header">
-          <span class="progress-label">Journey progress</span>
-          <span class="progress-pct">${progress}%</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" style="width:${progress}%"></div>
-        </div>
-        <p class="progress-note">Based on certifications earned, projects built, and professional presence</p>
-      </div>
-
-      <div class="metrics-row">
-        <div class="metric-card">
-          <span class="metric-num">${days}</span>
-          <span class="metric-lbl">Days learning</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-num">${earnedCerts}</span>
-          <span class="metric-lbl">Certs earned</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-num">${completedProjects}</span>
-          <span class="metric-lbl">Projects done</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-num">${apps || '—'}</span>
-          <span class="metric-lbl">Applications</span>
-        </div>
-      </div>
-
-      <div class="two-col">
-
-        <div class="panel">
-          <h2 class="panel-title">Recent certifications</h2>
-          ${data.certifications.slice(0,4).map(c => `
-            <div class="row-item">
-              <div class="row-dot dot-${c.status === 'earned' ? 'green' : c.status === 'planned' ? 'gray' : 'amber'}"></div>
-              <div class="row-main">
-                <span class="row-name">${c.name}</span>
-                ${c.notes ? `<span class="row-sub">${c.notes}</span>` : ''}
-              </div>
-              ${statusBadge(c.status)}
-            </div>
-          `).join('')}
-          <button class="see-more" data-tab="certs">View all certifications →</button>
-        </div>
-
-        <div class="panel">
-          <h2 class="panel-title">Recent projects</h2>
-          ${data.projects.slice(0,4).map(p => `
-            <div class="row-item">
-              <div class="row-dot dot-${p.status === 'complete' ? 'green' : 'amber'}"></div>
-              <div class="row-main">
-                <span class="row-name">${p.name}</span>
-                <span class="row-sub">${p.skills.slice(0,3).join(' · ')}</span>
-              </div>
-              ${statusBadge(p.status)}
-            </div>
-          `).join('')}
-          <button class="see-more" data-tab="projects">View all projects →</button>
-        </div>
-
-      </div>
-
-    </div>
-  `;
-}
-
-function renderCerts(data) {
-  return `
-    <div class="page">
-      <div class="page-header">
-        <h1 class="page-title">Certifications</h1>
-        <p class="page-sub">Every cert earned, in progress, or planned</p>
-      </div>
-      <div class="cert-grid">
-        ${data.certifications.map(c => `
-          <div class="cert-card cert-${c.status}">
-            <div class="cert-card-top">
-              <span class="cert-issuer">${c.issuer}</span>
-              ${statusBadge(c.status)}
-            </div>
-            <h3 class="cert-name">${c.name}</h3>
-            ${c.earnedDate ? `<p class="cert-date">Earned ${monthLabel(c.earnedDate)}</p>` : ''}
-            ${c.notes ? `<p class="cert-notes">${c.notes}</p>` : ''}
-            ${c.credlyUrl ? `<a href="${c.credlyUrl}" target="_blank" class="cert-link">View badge ↗</a>` : ''}
-          </div>
-        `).join('')}
       </div>
     </div>
-  `;
-}
-
-function renderProjects(data) {
-  return `
-    <div class="page">
-      <div class="page-header">
-        <h1 class="page-title">Projects</h1>
-        <p class="page-sub">Hands-on work — real problems, real fixes, real documentation</p>
+    <div class="progress-section">
+      <div class="progress-header"><span class="progress-label">Journey progress</span><span class="progress-pct">${prog}%</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${prog}%"></div></div>
+      <p class="progress-note">Based on certifications earned, projects built, and professional presence</p>
+    </div>
+    <div class="metrics-row">
+      <div class="metric-card"><span class="metric-num">${days}</span><span class="metric-lbl">Days learning</span></div>
+      <div class="metric-card"><span class="metric-num">${earned}</span><span class="metric-lbl">Certs earned</span></div>
+      <div class="metric-card"><span class="metric-num">${done}</span><span class="metric-lbl">Projects done</span></div>
+      <div class="metric-card"><span class="metric-num">${d.applications.length||'—'}</span><span class="metric-lbl">Applications</span></div>
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <h2 class="panel-title">Recent certifications</h2>
+        ${d.certifications.slice(0,4).map(c=>`<div class="row-item"><div class="row-dot dot-${c.status==='earned'?'green':c.status==='planned'?'gray':'amber'}"></div><div class="row-main"><span class="row-name">${c.name}</span>${c.notes?`<span class="row-sub">${c.notes}</span>`:''}</div>${statusBadge(c.status)}</div>`).join('')}
+        <button class="see-more" data-tab="certs">View all certifications →</button>
       </div>
-      <div class="project-list">
-        ${data.projects.map((p, i) => `
-          <div class="project-card">
-            <div class="project-header">
-              <div>
-                <h3 class="project-name">${p.name}</h3>
-                <div class="project-skills">
-                  ${p.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
-                </div>
-              </div>
-              ${statusBadge(p.status)}
-            </div>
-            <p class="project-desc">${p.description}</p>
-            ${p.highlight ? `<div class="project-highlight">→ ${p.highlight}</div>` : ''}
-            <div class="project-links">
-              ${p.githubUrl ? `<a href="${p.githubUrl}" target="_blank" class="link-chip">GitHub ↗</a>` : ''}
-              ${p.liveUrl ? `<a href="${p.liveUrl}" target="_blank" class="link-chip">Live ↗</a>` : ''}
-            </div>
-          </div>
-        `).join('')}
+      <div class="panel">
+        <h2 class="panel-title">Recent projects</h2>
+        ${d.projects.slice(0,4).map(p=>`<div class="row-item"><div class="row-dot dot-${p.status==='complete'?'green':'amber'}"></div><div class="row-main"><span class="row-name">${p.name}</span><span class="row-sub">${p.skills.slice(0,3).join(' · ')}</span></div>${statusBadge(p.status)}</div>`).join('')}
+        <button class="see-more" data-tab="projects">View all projects →</button>
       </div>
     </div>
-  `;
+  </div>`
 }
 
-function renderSkills(data) {
-  const categories = [...new Set(data.skills.map(s => s.category))];
-  const catLabels = { cloud: 'Cloud', infrastructure: 'Infrastructure', security: 'Security', development: 'Development' };
-  return `
-    <div class="page">
-      <div class="page-header">
-        <h1 class="page-title">Skills</h1>
-        <p class="page-sub">Self-assessed proficiency — updated as I grow</p>
-      </div>
-      ${categories.map(cat => `
-        <div class="skills-section">
-          <h2 class="skills-cat">${catLabels[cat] || cat}</h2>
-          <div class="skills-list">
-            ${data.skills.filter(s => s.category === cat).map(s => `
-              <div class="skill-row">
-                <span class="skill-name">${s.name}</span>
-                <div class="skill-track">
-                  <div class="skill-fill" style="width:${s.level}%"></div>
-                </div>
-                <span class="skill-pct">${s.level}%</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `).join('')}
-      <p class="skills-note">Percentages reflect honest self-assessment, not exam scores. Growth tracked over time.</p>
-    </div>
-  `;
+function renderCerts(d){
+  return`<div class="page">
+    <div class="page-header"><h1 class="page-title">Certifications</h1><p class="page-sub">Every cert earned, in progress, or planned</p></div>
+    <div class="cert-grid">${d.certifications.map(c=>`<div class="cert-card cert-${c.status}">
+      <div class="cert-card-top"><span class="cert-issuer">${c.issuer}</span>${statusBadge(c.status)}</div>
+      <h3 class="cert-name">${c.name}</h3>
+      ${c.earnedDate?`<p class="cert-date">Earned ${monthLabel(c.earnedDate)}</p>`:''}
+      ${c.notes?`<p class="cert-notes">${c.notes}</p>`:''}
+      ${c.credlyUrl?`<a href="${c.credlyUrl}" target="_blank" class="cert-link">View badge ↗</a>`:''}
+    </div>`).join('')}</div>
+  </div>`
 }
 
-function renderTimeline(data) {
-  const sorted = [...data.timeline].sort((a, b) => a.date.localeCompare(b.date));
-  return `
-    <div class="page">
-      <div class="page-header">
-        <h1 class="page-title">Timeline</h1>
-        <p class="page-sub">The full journey — every milestone since September 2024</p>
+function renderProjects(d){
+  return`<div class="page">
+    <div class="page-header"><h1 class="page-title">Projects</h1><p class="page-sub">Hands-on work — real problems, real fixes, real documentation</p></div>
+    <div class="project-list">${d.projects.map(p=>`<div class="project-card">
+      <div class="project-header">
+        <div><h3 class="project-name">${p.name}</h3><div class="project-skills">${p.skills.map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div></div>
+        ${statusBadge(p.status)}
       </div>
-      <div class="timeline">
-        ${sorted.map((item, i) => `
-          <div class="timeline-item">
-            <div class="timeline-left">
-              <span class="tl-date">${monthLabel(item.date)}</span>
-            </div>
-            <div class="timeline-connector">
-              <div class="tl-icon tl-${typeColor(item.type)}">${typeIcon(item.type)}</div>
-              ${i < sorted.length - 1 ? '<div class="tl-line"></div>' : ''}
-            </div>
-            <div class="timeline-right">
-              <span class="tl-type">${item.type}</span>
-              <p class="tl-event">${item.event}</p>
-            </div>
-          </div>
-        `).join('')}
+      <p class="project-desc">${p.description}</p>
+      ${p.highlight?`<div class="project-highlight">→ ${p.highlight}</div>`:''}
+      <div class="project-links">
+        ${p.githubUrl?`<a href="${p.githubUrl}" target="_blank" class="link-chip">GitHub ↗</a>`:''}
+        ${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" class="link-chip">Live ↗</a>`:''}
       </div>
-    </div>
-  `;
+    </div>`).join('')}</div>
+  </div>`
 }
 
-// ── Router ─────────────────────────────────────────────────────────────────
-function init(data) {
-  const pages = { dashboard: renderDashboard, certs: renderCerts, projects: renderProjects, skills: renderSkills, timeline: renderTimeline };
-  let current = 'dashboard';
+function renderSkills(d){
+  const cats=[...new Set(d.skills.map(s=>s.category))];
+  const labels={cloud:'Cloud',infrastructure:'Infrastructure',security:'Security',development:'Development'};
+  return`<div class="page">
+    <div class="page-header"><h1 class="page-title">Skills</h1><p class="page-sub">Self-assessed proficiency — updated as I grow</p></div>
+    ${cats.map(cat=>`<div class="skills-section"><h2 class="skills-cat">${labels[cat]||cat}</h2><div class="skills-list">
+      ${d.skills.filter(s=>s.category===cat).map(s=>`<div class="skill-row"><span class="skill-name">${s.name}</span><div class="skill-track"><div class="skill-fill" style="width:${s.level}%"></div></div><span class="skill-pct">${s.level}%</span></div>`).join('')}
+    </div></div>`).join('')}
+    <p class="skills-note">Percentages reflect honest self-assessment. Growth tracked over time.</p>
+  </div>`
+}
 
-  function render(tab) {
-    current = tab;
-    document.getElementById('main').innerHTML = pages[tab](data);
-    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-    // Wire up "see more" buttons inside pages
-    document.querySelectorAll('[data-tab]').forEach(el => {
-      if (!el.classList.contains('tab')) {
-        el.addEventListener('click', () => render(el.dataset.tab));
-      }
+function renderTimeline(d){
+  const sorted=[...d.timeline].sort((a,b)=>a.date.localeCompare(b.date));
+  return`<div class="page">
+    <div class="page-header"><h1 class="page-title">Timeline</h1><p class="page-sub">The full journey — every milestone since September 2025</p></div>
+    <div class="timeline">${sorted.map((item,i)=>`<div class="timeline-item">
+      <div class="timeline-left"><span class="tl-date">${monthLabel(item.date+'-01')}</span></div>
+      <div class="timeline-connector">
+        <div class="tl-icon tl-${typeColor(item.type)}">${typeIcon(item.type)}</div>
+        ${i<sorted.length-1?'<div class="tl-line"></div>':''}
+      </div>
+      <div class="timeline-right"><span class="tl-type">${item.type}</span><p class="tl-event">${item.event}</p></div>
+    </div>`).join('')}</div>
+  </div>`
+}
+
+(function init(){
+  const pages={dashboard:renderDashboard,certs:renderCerts,projects:renderProjects,skills:renderSkills,timeline:renderTimeline};
+  function render(tab){
+    document.getElementById('main').innerHTML=pages[tab](DATA);
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+    document.querySelectorAll('[data-tab]').forEach(el=>{
+      if(!el.classList.contains('tab'))el.addEventListener('click',()=>render(el.dataset.tab));
     });
   }
-
-  document.getElementById('navTabs').addEventListener('click', e => {
-    if (e.target.dataset.tab) render(e.target.dataset.tab);
-  });
-
+  document.getElementById('navTabs').addEventListener('click',e=>{if(e.target.dataset.tab)render(e.target.dataset.tab)});
   render('dashboard');
-}
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CyberOS — Gustavo Toral</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo"><span class="logo-bracket">[</span>CyberOS<span class="logo-bracket">]</span></div>
+    <div class="nav-tabs" id="navTabs">
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="certs">Certifications</button>
+      <button class="tab" data-tab="projects">Projects</button>
+      <button class="tab" data-tab="skills">Skills</button>
+      <button class="tab" data-tab="timeline">Timeline</button>
+    </div>
+    <div class="nav-right">
+      <span class="status-dot"></span>
+      <span class="status-label">Live</span>
+    </div>
+  </nav>
+
+  <!-- PAGES -->
+  <main id="main"></main>
+
+</div>
+
+<script>
+// ── Load data ──────────────────────────────────────────────────────────────
+fetch('data.json')
+  .then(r => r.json())
+  .then(data => init(data))
+  .catch(() => {
+    document.getElementById('main').innerHTML = '<p style="padding:2rem;color:#f87171;">Could not load data.json. Make sure the file is in the same folder.</p>';
+  });
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function daysAgo(dateStr) {
+  const start = new Date(dateStr);
+  const now = new Date();
+  return Math.floor((now - start) / (1000 * 60 * 60 * 24));
+}
+
+function monthLabel(dateStr) {
+  const [year, month] = dateStr.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[parseInt(month, 10) - 1] + ' ' + year;
+}
+
+function statusBadge(status) {
+  const map = {
+    earned: ['badge-green', 'Earned'],
+    planned: ['badge-gray', 'Planned'],
+    'in-progress': ['badge-amber', 'In progress'],
+    complete: ['badge-green', 'Complete']
+  };
+  const [cls, label] = map[status] || ['badge-gray', status];
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+
+function typeIcon(type) {
+  return { cert: '◆', project: '▲', education: '●', milestone: '★' }[type] || '●';
+}
+
+function typeColor(type) {
+  return { cert: 'teal', project: 'blue', education: 'purple', milestone: 'amber' }[type] || 'gray';
+}
+
+// ── Progress calculation ───────────────────────────────────────────────────
+function calcProgress(data) {
+  let score = 0;
+  const earned = data.certifications.filter(c => c.status === 'earned').length;
+  score += Math.min(earned * 10, 30);
+  const done = data.projects.filter(p => p.status === 'complete').length;
+  score += Math.min(done * 8, 32);
+  if (data.profile.github) score += 10;
+  if (data.profile.linkedin) score += 8;
+  return Math.min(score, 100);
+}
+
+// ── Pages ──────────────────────────────────────────────────────────────────
+function renderDashboard(data) {
+  const progress = calcProgress(data);
+  const days = daysAgo(data.profile.startDate);
+  const earnedCerts = data.certifications.filter(c => c.status === 'earned').length;
+  const completedProjects = data.projects.filter(p => p.status === 'complete').length;
+  const apps = data.applications.length;
+
+  return `
+    <div class="page page-dashboard">
+
+      <div class="hero-block">
+        <div class="hero-avatar">${data.profile.name.split(' ').map(n=>n[0]).join('')}</div>
+        <div class="hero-info">
+          <h1 class="hero-name">${data.profile.name}</h1>
+          <p class="hero-sub">${data.profile.location} &nbsp;·&nbsp; Targeting: ${data.profile.targets.slice(0,3).join(', ')}</p>
+          <p class="hero-summary">${data.profile.summary}</p>
+          <div class="hero-links">
+            ${data.profile.github ? `<a href="${data.profile.github}" target="_blank" class="link-chip">GitHub ↗</a>` : ''}
+            ${data.profile.linkedin ? `<a href="${data.profile.linkedin}" target="_blank" class="link-chip">LinkedIn ↗</a>` : ''}
+            ${data.profile.portfolio ? `<a href="${data.profile.portfolio}" target="_blank" class="link-chip">Portfolio ↗</a>` : ''}
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-header">
+          <span class="progress-label">Journey progress</span>
+          <span class="progress-pct">${progress}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:${progress}%"></div>
+        </div>
+        <p class="progress-note">Based on certifications earned, projects built, and professional presence</p>
+      </div>
+
+      <div class="metrics-row">
+        <div class="metric-card">
+          <span class="metric-num">${days}</span>
+          <span class="metric-lbl">Days learning</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-num">${earnedCerts}</span>
+          <span class="metric-lbl">Certs earned</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-num">${completedProjects}</span>
+          <span class="metric-lbl">Projects done</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-num">${apps || '—'}</span>
+          <span class="metric-lbl">Applications</span>
+        </div>
+      </div>
+
+      <div class="two-col">
+
+        <div class="panel">
+          <h2 class="panel-title">Recent certifications</h2>
+          ${data.certifications.slice(0,4).map(c => `
+            <div class="row-item">
+              <div class="row-dot dot-${c.status === 'earned' ? 'green' : c.status === 'planned' ? 'gray' : 'amber'}"></div>
+              <div class="row-main">
+                <span class="row-name">${c.name}</span>
+                ${c.notes ? `<span class="row-sub">${c.notes}</span>` : ''}
+              </div>
+              ${statusBadge(c.status)}
+            </div>
+          `).join('')}
+          <button class="see-more" data-tab="certs">View all certifications →</button>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">Recent projects</h2>
+          ${data.projects.slice(0,4).map(p => `
+            <div class="row-item">
+              <div class="row-dot dot-${p.status === 'complete' ? 'green' : 'amber'}"></div>
+              <div class="row-main">
+                <span class="row-name">${p.name}</span>
+                <span class="row-sub">${p.skills.slice(0,3).join(' · ')}</span>
+              </div>
+              ${statusBadge(p.status)}
+            </div>
+          `).join('')}
+          <button class="see-more" data-tab="projects">View all projects →</button>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+function renderCerts(data) {
+  return `
+    <div class="page">
+      <div class="page-header">
+        <h1 class="page-title">Certifications</h1>
+        <p class="page-sub">Every cert earned, in progress, or planned</p>
+      </div>
+      <div class="cert-grid">
+        ${data.certifications.map(c => `
+          <div class="cert-card cert-${c.status}">
+            <div class="cert-card-top">
+              <span class="cert-issuer">${c.issuer}</span>
+              ${statusBadge(c.status)}
+            </div>
+            <h3 class="cert-name">${c.name}</h3>
+            ${c.earnedDate ? `<p class="cert-date">Earned ${monthLabel(c.earnedDate)}</p>` : ''}
+            ${c.notes ? `<p class="cert-notes">${c.notes}</p>` : ''}
+            ${c.credlyUrl ? `<a href="${c.credlyUrl}" target="_blank" class="cert-link">View badge ↗</a>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderProjects(data) {
+  return `
+    <div class="page">
+      <div class="page-header">
+        <h1 class="page-title">Projects</h1>
+        <p class="page-sub">Hands-on work — real problems, real fixes, real documentation</p>
+      </div>
+      <div class="project-list">
+        ${data.projects.map((p, i) => `
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h3 class="project-name">${p.name}</h3>
+                <div class="project-skills">
+                  ${p.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
+                </div>
+              </div>
+              ${statusBadge(p.status)}
+            </div>
+            <p class="project-desc">${p.description}</p>
+            ${p.highlight ? `<div class="project-highlight">→ ${p.highlight}</div>` : ''}
+            <div class="project-links">
+              ${p.githubUrl ? `<a href="${p.githubUrl}" target="_blank" class="link-chip">GitHub ↗</a>` : ''}
+              ${p.liveUrl ? `<a href="${p.liveUrl}" target="_blank" class="link-chip">Live ↗</a>` : ''}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderSkills(data) {
+  const categories = [...new Set(data.skills.map(s => s.category))];
+  const catLabels = { cloud: 'Cloud', infrastructure: 'Infrastructure', security: 'Security', development: 'Development' };
+  return `
+    <div class="page">
+      <div class="page-header">
+        <h1 class="page-title">Skills</h1>
+        <p class="page-sub">Self-assessed proficiency — updated as I grow</p>
+      </div>
+      ${categories.map(cat => `
+        <div class="skills-section">
+          <h2 class="skills-cat">${catLabels[cat] || cat}</h2>
+          <div class="skills-list">
+            ${data.skills.filter(s => s.category === cat).map(s => `
+              <div class="skill-row">
+                <span class="skill-name">${s.name}</span>
+                <div class="skill-track">
+                  <div class="skill-fill" style="width:${s.level}%"></div>
+                </div>
+                <span class="skill-pct">${s.level}%</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')}
+      <p class="skills-note">Percentages reflect honest self-assessment, not exam scores. Growth tracked over time.</p>
+    </div>
+  `;
+}
+
+function renderTimeline(data) {
+  const sorted = [...data.timeline].sort((a, b) => a.date.localeCompare(b.date));
+  return `
+    <div class="page">
+      <div class="page-header">
+        <h1 class="page-title">Timeline</h1>
+        <p class="page-sub">The full journey — every milestone since September 2024</p>
+      </div>
+      <div class="timeline">
+        ${sorted.map((item, i) => `
+          <div class="timeline-item">
+            <div class="timeline-left">
+              <span class="tl-date">${monthLabel(item.date)}</span>
+            </div>
+            <div class="timeline-connector">
+              <div class="tl-icon tl-${typeColor(item.type)}">${typeIcon(item.type)}</div>
+              ${i < sorted.length - 1 ? '<div class="tl-line"></div>' : ''}
+            </div>
+            <div class="timeline-right">
+              <span class="tl-type">${item.type}</span>
+              <p class="tl-event">${item.event}</p>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ── Router ─────────────────────────────────────────────────────────────────
+function init(data) {
+  const pages = { dashboard: renderDashboard, certs: renderCerts, projects: renderProjects, skills: renderSkills, timeline: renderTimeline };
+  let current = 'dashboard';
+
+  function render(tab) {
+    current = tab;
+    document.getElementById('main').innerHTML = pages[tab](data);
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    // Wire up "see more" buttons inside pages
+    document.querySelectorAll('[data-tab]').forEach(el => {
+      if (!el.classList.contains('tab')) {
+        el.addEventListener('click', () => render(el.dataset.tab));
+      }
+    });
+  }
+
+  document.getElementById('navTabs').addEventListener('click', e => {
+    if (e.target.dataset.tab) render(e.target.dataset.tab);
+  });
+
+  render('dashboard');
+}
+</script>
+</body>
+</html>

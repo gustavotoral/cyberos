@@ -8,38 +8,54 @@
     "github": "https://github.com/gustavotoral",
     "linkedin": "https://linkedin.com/in/gustavotoral",
     "portfolio": "https://gustavotoral.github.io/helpdesk-portfolio/",
-    "startDate": "2024-09-01"
+    "startDate": "2025-09-01"
   },
   "certifications": [
     {
-      "name": "CompTIA A+",
+      "name": "CompTIA A+ ce Certification",
       "issuer": "CompTIA",
       "status": "earned",
-      "earnedDate": "2025-01-01",
+      "earnedDate": "2025-12-01",
       "credlyUrl": "",
       "notes": "Core 1 & Core 2"
     },
     {
-      "name": "CompTIA Network+",
+      "name": "CompTIA Network+ ce Certification",
       "issuer": "CompTIA",
       "status": "earned",
-      "earnedDate": "2025-02-01",
+      "earnedDate": "2026-01-01",
       "credlyUrl": "",
       "notes": ""
+    },
+    {
+      "name": "CompTIA IT Operations Specialist – CIOS",
+      "issuer": "CompTIA",
+      "status": "earned",
+      "earnedDate": "2026-01-01",
+      "credlyUrl": "",
+      "notes": "Stackable certification — A+ and Network+ combined"
     },
     {
       "name": "CompTIA Security+",
       "issuer": "CompTIA",
       "status": "earned",
-      "earnedDate": "2025-03-01",
+      "earnedDate": "2026-02-01",
       "credlyUrl": "",
       "notes": ""
     },
     {
-      "name": "AWS Cloud Practitioner",
+      "name": "AWS Certified Cloud Practitioner",
       "issuer": "Amazon Web Services",
       "status": "earned",
-      "earnedDate": "2025-04-01",
+      "earnedDate": "2026-04-01",
+      "credlyUrl": "",
+      "notes": "Credential ID b4467c02-565c-4556-b5f3-32355a51eaa3"
+    },
+    {
+      "name": "AI Clinics Cohort 5",
+      "issuer": "Coursera",
+      "status": "earned",
+      "earnedDate": "2025-10-01",
       "credlyUrl": "",
       "notes": ""
     },
@@ -51,7 +67,14 @@
       "credlyUrl": "",
       "notes": "Next target after landing first role"
     },
-  
+    {
+      "name": "CompTIA CySA+",
+      "issuer": "CompTIA",
+      "status": "planned",
+      "earnedDate": "",
+      "credlyUrl": "",
+      "notes": "Supports SOC Analyst track"
+    }
   ],
   "projects": [
     {
@@ -117,42 +140,52 @@
       "type": "education"
     },
     {
-      "date": "2025-01",
+      "date": "2025-10",
+      "event": "Earned AI Clinics Cohort 5 — Coursera",
+      "type": "cert"
+    },
+    {
+      "date": "2025-12",
       "event": "Earned CompTIA A+",
       "type": "cert"
     },
     {
-      "date": "2025-02",
+      "date": "2026-01",
       "event": "Earned CompTIA Network+",
       "type": "cert"
     },
     {
-      "date": "2025-02",
+      "date": "2026-01",
+      "event": "Earned CompTIA CIOS Stackable Certification",
+      "type": "cert"
+    },
+    {
+      "date": "2026-01",
       "event": "Built Active Directory home lab — documented real troubleshooting",
       "type": "project"
     },
     {
-      "date": "2025-03",
+      "date": "2026-02",
       "event": "Earned CompTIA Security+",
       "type": "cert"
     },
     {
-      "date": "2025-03",
+      "date": "2026-02",
       "event": "Deployed AWS S3 + CloudFront static site — debugged 2 real errors",
       "type": "project"
     },
     {
-      "date": "2025-03",
+      "date": "2026-03",
       "event": "Built SIEM Incident Response Simulator in React",
       "type": "project"
     },
     {
-      "date": "2025-04",
-      "event": "Earned AWS Cloud Practitioner",
+      "date": "2026-04",
+      "event": "Earned AWS Certified Cloud Practitioner",
       "type": "cert"
     },
     {
-      "date": "2025-04",
+      "date": "2026-04",
       "event": "Attended Miami Dade College tech hiring day",
       "type": "milestone"
     }

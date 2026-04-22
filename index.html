@@ -10,7 +10,7 @@
 :root{
   --bg:#0a0c0f;--bg2:#111419;--bg3:#181c23;
   --border:#1e2430;--border2:#2a3040;
-  --text:#e8edf5;--text2:#8a95a8;--text3:#555f70;
+  --text:#f0f4fc;--text2:#a8b4c8;--text3:#6b7a90;
   --teal:#0fcfa0;--teal-dim:#0a8f6e;--teal-bg:rgba(15,207,160,0.08);
   --blue:#4da6f5;--blue-bg:rgba(77,166,245,0.08);
   --amber:#f5a623;--amber-bg:rgba(245,166,35,0.08);
@@ -19,7 +19,7 @@
   --radius:8px;--radius-lg:12px;
   --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
 }
-html{font-size:15px}
+html{font-size:16px}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;min-height:100vh}
 a{color:var(--teal);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -172,8 +172,9 @@ const DATA = {
     { name: "CompTIA Security+",                         issuer: "CompTIA",               status: "earned",  earnedDate: "2026-02-01", credlyUrl: "", notes: "" },
     { name: "AWS Certified Cloud Practitioner",          issuer: "Amazon Web Services",   status: "earned",  earnedDate: "2026-04-01", credlyUrl: "", notes: "" },
     { name: "AI Clinics Cohort 5",                       issuer: "Coursera",              status: "earned",  earnedDate: "2025-10-01", credlyUrl: "", notes: "" },
-    { name: "AWS Solutions Architect – Associate",       issuer: "Amazon Web Services",   status: "planned", earnedDate: "",           credlyUrl: "", notes: "Next target after landing first role" },
-    { name: "CompTIA CySA+",                             issuer: "CompTIA",               status: "planned", earnedDate: "",           credlyUrl: "", notes: "Supports SOC Analyst track" }
+    { name: "AWS Solutions Architect – Associate",       issuer: "Amazon Web Services",   status: "planned", earnedDate: "",           credlyUrl: "", notes: "Next target after landing first role" }
+    // TO ADD A CERT: paste a new line above this comment. Copy the format from any line above.
+    // status options: "earned"  "in-progress"  "planned"
   ],
 
   projects: [
@@ -185,14 +186,15 @@ const DATA = {
   ],
 
   skills: [
-    { name: "Cloud (AWS)",            level: 70, category: "cloud" },
-    { name: "Networking",             level: 75, category: "infrastructure" },
-    { name: "Security fundamentals",  level: 65, category: "security" },
-    { name: "Windows Server / AD",    level: 60, category: "infrastructure" },
-    { name: "Linux / CLI",            level: 50, category: "infrastructure" },
-    { name: "Incident response",      level: 55, category: "security" },
-    { name: "GRC concepts",           level: 40, category: "security" },
-    { name: "Python / scripting",     level: 30, category: "development" }
+    // level = 1 to 100, your honest self-assessment
+    // category options: "cloud"  "infrastructure"  "security"  "development"
+    // TO ADD: paste a new line, change name/level/category
+    { name: "Cloud (AWS)",           level: 70, category: "cloud" },
+    { name: "Networking",            level: 75, category: "infrastructure" },
+    { name: "Security fundamentals", level: 65, category: "security" },
+    { name: "Windows Server / AD",   level: 60, category: "infrastructure" },
+    { name: "Linux / CLI",           level: 50, category: "infrastructure" },
+    { name: "Incident response",     level: 55, category: "security" }
   ],
 
   timeline: [

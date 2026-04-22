@@ -51,14 +51,7 @@
       "credlyUrl": "",
       "notes": "Next target after landing first role"
     },
-    {
-      "name": "CompTIA CySA+",
-      "issuer": "CompTIA",
-      "status": "planned",
-      "earnedDate": "",
-      "credlyUrl": "",
-      "notes": "Supports SOC Analyst track"
-    }
+  
   ],
   "projects": [
     {
